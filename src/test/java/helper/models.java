@@ -21,4 +21,43 @@ public class models {
         return request.get(endpoint);
     }
 
+    public static Response postCreateUser(String endPoint){
+
+        String name = "Wira Adi Putra";
+        String gender = "male";
+        String email = utility.generateEmail();
+        String status = "active";
+        JSONObject payload = new JSONObject();
+        payload.put("name", name);
+        payload.put("gender", gender);
+        payload.put("email", email);
+        payload.put("status", status);
+
+        setupHeaders();
+        return request.body(payload.toString()).when().post(endPoint);
+    }
+
+    public static Response deleteUser(String endPoint, String userId){
+        setupHeaders();
+        String finalEndPoint = endPoint + "/" + userId;
+        return request.when().delete(finalEndPoint);
+    }
+
+    public static Response UpdateUser (String endPoint, String userId) {
+        setupHeaders();
+
+        String name = "WRAP";
+        String gender = "male";
+        String email = utility.generateEmail();
+        String status = "active";
+        JSONObject payload = new JSONObject();
+        payload.put("name", name);
+        payload.put("gender", gender);
+        payload.put("email", email);
+        payload.put("status", status);
+
+        String finalEndPoint = endPoint + "/" + userId;
+        return request.body(payload.toString()).when().put(finalEndPoint);
+    }
+
 }

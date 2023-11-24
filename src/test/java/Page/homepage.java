@@ -20,4 +20,9 @@ public class homepage {
         assertTrue(productElement.isDisplayed());
         assertEquals("Sauce Labs Backpack", productElement.getText());
     }
+    public void userIsOnHomepageSeeErrorCatalog() {
+        WebElement productElement = driver.findElement(productTitle);
+        assertTrue(productElement.isDisplayed());
+        assertEquals("Sauce Labs Backpack", productElement.getText());
+    }
 }

@@ -10,4 +10,12 @@ public class homeStepdef extends baseTest {
         HomePage = new homepage(driver);
         HomePage.validateOnHomePage();
     }
+
+    @Then("user is on homepage see error catalog")
+    public void userIsOnHomepageSeeErrorCatalog() {
+    }
+
+    @Then("user is on homepage see error one picture catalog")
+    public void userIsOnHomepageSeeErrorOnePictureCatalog() {
+    }
 }

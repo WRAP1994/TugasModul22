@@ -3,16 +3,17 @@ package Page;
 import helper.EndPoint;
 import helper.utility;
 import io.restassured.module.jsv.JsonSchemaValidator;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
 import java.io.File;
 import java.util.List;
 
-import static helper.models.getListUsers;
+import static helper.models.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ApiPage {
-    String setURL;
+    String setURL,global_id;
     Response res;
 
     public void prepareUrlFor(String url){
@@ -22,6 +23,9 @@ public class ApiPage {
                 break;
             case "CREATE_NEW_USERS":
                 setURL = EndPoint.CREATE_NEW_USERS;
+                break;
+            case "POST_USERS":
+                setURL = EndPoint.POST_USERS;
                 break;
             case "DELETE_USERS":
                 setURL = EndPoint.DELETE_USERS;
@@ -56,4 +60,49 @@ public class ApiPage {
         res.then().assertThat().body(JsonSchemaValidator.matchesJsonSchema(JSONFile));
 
     }
+    public void hitApiPostCreateUsers(){
+        res = postCreateUser(setURL);
+    }
+
+    public void validationResponseBodyPostCreateNewUsers() {
+        JsonPath jsonPathEvaluator = res.jsonPath();
+        Integer id = jsonPathEvaluator.get("id");
+        String name = jsonPathEvaluator.get("name");
+        String email = jsonPathEvaluator.get("email");
+        String gender = jsonPathEvaluator.get("gender");
+        String status = jsonPathEvaluator.get("status");
+
+        assertThat(id).isNotNull();
+        assertThat(name).isNotNull();
+        assertThat(email).isNotNull();
+        assertThat(gender).isIn("female", "male");
+        assertThat(status).isIn("active", "inactive");
+
+        global_id = Integer.toString(id);
+    }
+
+    public void hitApiDeleteUser() {
+        res = deleteUser(setURL,global_id);
+    }
+
+    public void hitUpdateUser() {
+        res = UpdateUser(setURL,global_id);
+    }
+
+    public void validationResponseBodyUpdateUsers() {
+        JsonPath jsonPathEvaluator = res.jsonPath();
+        Integer id = jsonPathEvaluator.get("id");
+        String name = jsonPathEvaluator.get("name");
+        String email = jsonPathEvaluator.get("email");
+        String gender = jsonPathEvaluator.get("gender");
+        String status = jsonPathEvaluator.get("status");
+
+        assertThat(id).isNotNull();
+        assertThat(name).isNotNull();
+        assertThat(email).isNotNull();
+        assertThat(gender).isIn("female", "male");
+        assertThat(status).isIn("active", "inactive");
+    }
+
+
 }
